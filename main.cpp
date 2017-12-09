@@ -12,6 +12,9 @@ typedef pair<int, int> iPair;
 int dist[2001][1<<(14)];
 iPair parent[2001][1<<(14)];
 int thieves[2001][2001];
+vector<iPair> adj[2001];
+int collection[2001];
+
 class priority{
 public:
     int dist;
@@ -50,7 +53,6 @@ int main(int argc, char* argv[]) {
     getline(infile, line);
     split1(line, words);
     int n=stoi(words[0]),m=stoi(words[1]),p=stoi(words[2]),k=stoi(words[3]);
-    int collection[n+1];
     for(int i=0;i<n+1;i++)
         collection[i]=0;
 
@@ -70,7 +72,7 @@ int main(int argc, char* argv[]) {
         for(int j=0;j<n+1;j++)
             thieves[i][j]=0;
     }
-    vector<iPair> adj[n+1];
+
     for(int i=0;i<m;i++){
         int temp=0;
         vector<string> words;
