@@ -8,7 +8,10 @@
 #include <queue>
 using namespace std;
 #define INF 0x3f3f3f3f
-
+typedef pair<int, int> iPair;
+int dist[2001][1<<(14)];
+iPair parent[2001][1<<(14)];
+int thieves[2001][2001];
 class priority{
 public:
     int dist;
@@ -47,8 +50,10 @@ int main(int argc, char* argv[]) {
     getline(infile, line);
     split1(line, words);
     int n=stoi(words[0]),m=stoi(words[1]),p=stoi(words[2]),k=stoi(words[3]);
-    typedef int distance[n+1][1 << (p+1)];
-    int collection[n+1]={0};
+    int collection[n+1];
+    for(int i=0;i<n+1;i++)
+        collection[i]=0;
+
     for(int i=0;i<k;i++){
         int temp=0;
         vector<string> words;
@@ -61,9 +66,10 @@ int main(int argc, char* argv[]) {
         collection[stoi(words[0])]|=temp;
     }
 
-    typedef pair<int, int> iPair;
-    int thieves[n+1][n+1]={0};
-
+    for(int i=0;i<n+1;i++){
+        for(int j=0;j<n+1;j++)
+            thieves[i][j]=0;
+    }
     vector<iPair> adj[n+1];
     for(int i=0;i<m;i++){
         int temp=0;
@@ -81,8 +87,8 @@ int main(int argc, char* argv[]) {
         thieves[stoi(words[1])][stoi(words[0])]=temp;
     }
 
-    distance dist;
-    iPair parent[n+1][1<<(p+1)];
+
+
     for(int i=0;i<(n+1);i++){
         for(int j=0;j<(1<<(p+1));j++){
             dist[i][j]=INF;
@@ -130,8 +136,11 @@ int main(int argc, char* argv[]) {
         pq.pop();
     }
 
+    ofstream myfile;
+    myfile.open(argv[2]);
+
     if(cou==0)
-        cout<<-1;
+        myfile<<-1;
 
     else{
         string s;
@@ -147,7 +156,7 @@ int main(int argc, char* argv[]) {
                 break;
         }
 
-        cout<<s;
+        myfile<<s;
 
     }
 }
