@@ -7,8 +7,6 @@
 #include "fstream"
 #include <queue>
 using namespace std;
-
-//global declerations
 #define INF 0x3f3f3f3f
 typedef pair<int, int> iPair;
 int dist[2001][1<<(14)];
@@ -17,7 +15,6 @@ int thieves[2001][2001];
 vector<iPair> adj[2001];
 int collection[2001];
 
-//class which is useful for priority queue ordering
 class priority{
 public:
     int dist;
@@ -33,7 +30,6 @@ public:
 
 };
 
-//method in order to choose the smallest distance in queue
 struct CustomCompare{
     bool operator()(const priority& lhs, const priority& rhs) {
         return lhs.dist > rhs.dist;
@@ -51,7 +47,6 @@ void split1(const string& str, Container& cont)
 
 
 int main(int argc, char* argv[]) {
-    //reads input
     fstream infile(argv[1]);
     string line = "";
     vector<string> words;
@@ -109,24 +104,19 @@ int main(int argc, char* argv[]) {
     int cou=0;
     int k1=0;
 
-    //finds the shortest path.
     while(!pq.empty()){
         int curr_node=pq.top().city;
-        //if it is n, it terminates in other words it finds the shortest path.
         if(curr_node!=n) {
             dist[curr_node][pq.top().key] = pq.top().dist;
             int keys = 0;
             vector<iPair>::iterator itr;
             keys = pq.top().key | collection[curr_node];
-
-            //visits neighbours.
             for (itr = adj[curr_node].begin(); itr != adj[curr_node].end(); itr++) {
                 iPair pair = *itr;
                 int curr_neighbour = pair.first;
                 int curr_weight = pair.second;
                 int check = thieves[curr_node][curr_neighbour] & keys;
 
-                //checks whether road is valid or not.
                 if (check == thieves[curr_node][curr_neighbour]) {
                     if (dist[curr_neighbour][keys] > dist[curr_node][pq.top().key] + curr_weight) {
                         dist[curr_neighbour][keys] = dist[curr_node][pq.top().key] + curr_weight;
@@ -148,15 +138,12 @@ int main(int argc, char* argv[]) {
         pq.pop();
     }
 
-    //writes output.
     ofstream myfile;
     myfile.open(argv[2]);
 
-    //if there is no path
     if(cou==0)
         myfile<<-1;
 
-    //recursively writes path
     else{
         string s;
         s=to_string(n);
@@ -174,8 +161,4 @@ int main(int argc, char* argv[]) {
         myfile<<s;
 
     }
-
-    myfile.close();
-
-    return 0;
 }
