@@ -111,13 +111,15 @@ int main(int argc, char* argv[]) {
 
     //finds the shortest path.
     while(!pq.empty()){
-        int curr_node=pq.top().city;
+    	priority temp=pq.top();
+    	pq.pop();
+        int curr_node=temp.city;
         //if it is n, it terminates in other words it finds the shortest path.
         if(curr_node!=n) {
-            dist[curr_node][pq.top().key] = pq.top().dist;
+            dist[curr_node][temp.key] = temp.dist;
             int keys = 0;
             vector<iPair>::iterator itr;
-            keys = pq.top().key | collection[curr_node];
+            keys = temp.key | collection[curr_node];
 
             //visits neighbours.
             for (itr = adj[curr_node].begin(); itr != adj[curr_node].end(); itr++) {
@@ -128,13 +130,13 @@ int main(int argc, char* argv[]) {
 
                 //checks whether road is valid or not.
                 if (check == thieves[curr_node][curr_neighbour]) {
-                    if (dist[curr_neighbour][keys] > dist[curr_node][pq.top().key] + curr_weight) {
-                        dist[curr_neighbour][keys] = dist[curr_node][pq.top().key] + curr_weight;
+                    if (dist[curr_neighbour][keys] > dist[curr_node][temp.key] + curr_weight) {
+                        dist[curr_neighbour][keys] = dist[curr_node][temp.key] + curr_weight;
                         if(curr_neighbour==n)
                             cou++;
 
                         parent[curr_neighbour][keys].first=curr_node;
-                        parent[curr_neighbour][keys].second=pq.top().key;
+                        parent[curr_neighbour][keys].second=temp.key;
                         pq.push(priority(dist[curr_neighbour][keys], curr_neighbour, keys));
                     }
                 }
@@ -142,10 +144,9 @@ int main(int argc, char* argv[]) {
             }
         }
         else {
-            k1=pq.top().key;
+            k1=temp.key;
             break;
         }
-        pq.pop();
     }
 
     //writes output.
