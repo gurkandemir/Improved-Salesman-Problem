@@ -108,7 +108,15 @@ int main(int argc, char* argv[]) {
     pq.push(priority(0,1,collection[1]));
     int cou=0;
     int k1=0;
-
+    
+     ofstream myfile;
+    myfile.open(argv[2]);
+    if(n==1) {
+        myfile << 1;
+        myfile.close();
+        return 0;
+    }
+    
     //finds the shortest path.
     while(!pq.empty()){
     	priority temp=pq.top();
@@ -148,10 +156,6 @@ int main(int argc, char* argv[]) {
             break;
         }
     }
-
-    //writes output.
-    ofstream myfile;
-    myfile.open(argv[2]);
 
     //if there is no path
     if(cou==0)
